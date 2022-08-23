@@ -115,6 +115,6 @@ jobs:
           # Test torch is importable
           cd ${GITHUB_WORKSPACE} 
           export CUDA_VER=cpu
-          conda run -p ${ENV_NAME} python3 install ffmpeg 
+          conda run -p ${ENV_NAME} pip3 install ffmpeg 
           conda run -p ${ENV_NAME} python3 ${GITHUB_WORKSPACE}/test/smoke_test/smoke_test.py
           conda env remove -p ${ENV_NAME}
