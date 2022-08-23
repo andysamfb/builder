@@ -56,6 +56,7 @@ jobs:
           conda install -p ${ENV_NAME} pytorch torchvision torchaudio -c ${{ matrix.conda_channel }}
           # Test torch is importable
           cd ${GITHUB_WORKSPACE} 
+          export CUDA_VER=cpu
           conda run -p ${ENV_NAME} python3 ${GITHUB_WORKSPACE}/test/smoke_test/smoke_test.py
           conda env remove -p ${ENV_NAME}
 
@@ -113,5 +114,6 @@ jobs:
 
           # Test torch is importable
           cd ${GITHUB_WORKSPACE} 
+          export CUDA_VER=cpu
           conda run -p ${ENV_NAME} python3 ${GITHUB_WORKSPACE}/test/smoke_test/smoke_test.py
           conda env remove -p ${ENV_NAME}
