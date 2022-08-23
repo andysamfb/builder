@@ -33,6 +33,8 @@ jobs:
       MAC_ARCH:  ${{ matrix.mac_arch }}
       PYTHON_VERSION: ${{ matrix.python_version }} 
     steps:
+      - name: Checkout PyTorch/Builder directory
+        uses: actions/checkout@v3
       - name: Install Fresh Miniconda in Runner Temp Dir
         run: |
           set -ex
@@ -53,9 +55,8 @@ jobs:
           conda create -yp ${ENV_NAME} python=${PYTHON_VERSION} numpy
           conda install -p ${ENV_NAME} pytorch torchvision torchaudio -c ${{ matrix.conda_channel }}
           # Test torch is importable
-          cd ${{ runner.temp }}
-          wget https://raw.githubusercontent.com/pytorch/builder/main/test/smoke_test/smoke_test.py
-          conda run -p ${ENV_NAME} python3 ${{ runner.temp }}/smoke_test.py
+          cd ${GITHUB_WORKSPACE} 
+          conda run -p ${ENV_NAME} python3 ${GITHUB_WORKSPACE}/test/smoke_test/smoke_test.py
           conda env remove -p ${ENV_NAME}
 
   validate-MacOS-wheels:
@@ -81,6 +82,8 @@ jobs:
       PYTHON_VERSION: ${{ matrix.python_version }} 
       PIP_CHANNEL: ${{ matrix.pip_channel }}
     steps:
+      - name: Checkout PyTorch/Builder directory
+        uses: actions/checkout@v3
       - name: Install Fresh Miniconda in Runner Temp Dir
         run: |
           set -ex
@@ -109,7 +112,6 @@ jobs:
           fi
 
           # Test torch is importable
-          cd ${{ runner.temp }}
-          wget https://raw.githubusercontent.com/pytorch/builder/main/test/smoke_test/smoke_test.py
-          conda run -p ${ENV_NAME} python3 ${{ runner.temp }}/smoke_test.py
+          cd ${GITHUB_WORKSPACE} 
+          conda run -p ${ENV_NAME} python3 ${GITHUB_WORKSPACE}/test/smoke_test/smoke_test.py
           conda env remove -p ${ENV_NAME}
